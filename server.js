@@ -33,7 +33,7 @@ mqttClient.on('message', function (topic, message)
     if (topic == "users/devices/location"){
       let userID = infoMessage["ID"];
       console.log(userID);
-      io.sockets.emit(userID, infoMessage)
+      io.sockets.emit("users/devices/location", infoMessage)
 
     }
 });

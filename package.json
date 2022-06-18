@@ -12,6 +12,7 @@
   "dependencies": {
     "dotenv": "^16.0.0",
     "express": "^4.17.3",
+    "messagebird": "^3.8.1",
     "mqtt": "^4.3.7",
     "socket.io": "^4.4.1"
   }

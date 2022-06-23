@@ -2,10 +2,12 @@ require("dotenv").config();
 const express = require("express");
 const http = require("http");
 const socketIo = require("socket.io");
+const mongoose = require("mongoose");
 const port = process.env.PORT || 4001;
 const index = require("./routes/index");
+const cors = require("cors");
 const app = express();
-app.use(index);
+
 const server = http.createServer(app);
 const io = socketIo(server);
 var mqtt = require("mqtt");
@@ -30,6 +32,8 @@ mqttClient.on("message", function (topic, message) {
   console.log("Received message:", topic, messageString);
   if (topic == "users/devices/location") {
     let userID = infoMessage["ID"];
+    let isAlarmed = infoMessage["isAlarmed"];
+    let floorLevel = infoMessage["floorLevel"];
     console.log(userID);
     io.sockets.emit("users/devices/location", infoMessage);
   }
@@ -50,19 +54,28 @@ io.on("connection", (socket) => {
   });
 });
 
-var messagebird = require("messagebird")("hUopHyMXjdTRn3fmwrKnWfoAQ");
+server.listen(port, () => console.log(`Listening on port ${port}`));
 
-var params = {
-  originator: "Assaf&&Elya",
-  recipients: ["+972585002912"],
-  body: "The patient is in room 440",
-};
+app.use(cors());
+app.use(index);
+app.use(express.json());
 
-messagebird.messages.create(params, function (err, response) {
-  if (err) {
-    return console.log(err);
+mongoose.connect(
+  "mongodb+srv://Asaf:1234@indoornavigationdatabas.ymcep.mongodb.net/?retryWrites=true&w=majority",
+  {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  },
+  () => {
+    console.log("Mongoose Is Connected");
   }
-  console.log(response);
+);
+const connection = mongoose.connection;
+connection.once("open", () => {
+  console.log("MongoDB database connection established successfully");
 });
 
-server.listen(port, () => console.log(`Listening on port ${port}`));
+const usersRouter = require("./routes/users");
+const clientsRouter = require("./routes/clients");
+app.use("/users", usersRouter);
+app.use("/clients", clientsRouter);

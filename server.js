@@ -77,3 +77,6 @@ connection.once("open", () => {
 
 const clientsRouter = require("./routes/clients");
 app.use("/clients", clientsRouter);
+
+const accessPointsRouter = require("./routes/accessPoints");
+app.use("/aps", accessPointsRouter);

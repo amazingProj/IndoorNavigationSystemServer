@@ -26,4 +26,20 @@ router.route("/add").post((req, res) => {
     .catch((err) => res.status(400).json("Error: " + err));
 });
 
+router.route("/update/:id").post((req, res) => {
+  AccessPoint.findById(req.params.id)
+    .then((accessPoint) => {
+      accessPoint.bssid = req.body.bssid;
+      accessPoint.x = req.body.x;
+      accessPoint.y = req.body.y;
+      accessPoint.floorLevel = req.body.floorLevel;
+      accessPoint.description = req.body.description;
+      client
+        .save()
+        .then(() => res.json("access point updated!"))
+        .catch((err) => res.status(400).json("Error: " + err));
+    })
+    .catch((err) => res.status(400).json("Error: " + err));
+});
+
 module.exports = router;

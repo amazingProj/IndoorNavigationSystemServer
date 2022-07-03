@@ -4,7 +4,7 @@ const http = require("http");
 const socketIo = require("socket.io");
 const mongoose = require("mongoose");
 const port = process.env.PORT || 4001;
-const index = require("./routes/index");
+const index = require("./routers/index");
 const cors = require("cors");
 const app = express();
 
@@ -75,8 +75,8 @@ connection.once("open", () => {
   console.log("MongoDB database connection established successfully");
 });
 
-const clientsRouter = require("./routes/clients");
+const clientsRouter = require("./routers/clients");
 app.use("/clients", clientsRouter);
 
-const accessPointsRouter = require("./routes/accessPoints");
+const accessPointsRouter = require("./routers/accessPoints");
 app.use("/aps", accessPointsRouter);

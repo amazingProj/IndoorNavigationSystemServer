@@ -46,11 +46,13 @@ mqttClient.on("error", function (error) {
 
 io.on("connection", (socket) => {
   console.log("New client connected");
-
+  console.log(socket.id);
+  console.log(socket.connected);
   socket.on("data", () => {});
 
   socket.on("disconnect", () => {
     console.log("Client disconnected");
+    console.log(socket.id);
   });
 });
 

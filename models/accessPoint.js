@@ -7,6 +7,7 @@ const AccessPointSchema = new Schema(
     bssid: { type: String, required: true },
     x: { type: String, required: true },
     y: { type: String, required: true },
+    room: { type: String, required: false },
     floorLevel: { type: String, required: true },
     description: { type: String, required: false },
   },

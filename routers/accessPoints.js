@@ -34,7 +34,7 @@ router.route("/update/:id").post((req, res) => {
       accessPoint.y = req.body.y;
       accessPoint.floorLevel = req.body.floorLevel;
       accessPoint.description = req.body.description;
-      client
+      accessPoint
         .save()
         .then(() => res.json("access point updated!"))
         .catch((err) => res.status(400).json("Error: " + err));
